@@ -2,11 +2,14 @@ let countyURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropl
 let localcountyURL = 'http://localhost/sih/geo%20json/america-county-geojson.json'
 let talukaData = 'http://localhost/sih/geo%20json/india_taluk.geojson.json'
 let educationURL = 'http://localhost/sih/geo%20json/educationDataTaluka.json'
+let disasterURL = 'http://localhost/sih/geo%20json/disasters.json'
 
 let countyData
 let educationData
 let canvas = d3.select('#canvas')
 let tooltip = d3.select('#tooltip')
+
+let select = document.getElementById('disaster');
 
 let arrayOfID = [] 
 
@@ -30,7 +33,9 @@ let drawMap = () => {
           let county = educationData.find((item) => {
               return item['fips'] === id
           })
-          let percentage = county['bachelorsOrHigher']
+          let disasterid = select.options[select.selectedIndex].value;
+          console.log("disater id = " +disasterid)
+          let percentage = county[disasterid]
           if(percentage <= 15){
               return 'tomato'
           }else if(percentage <= 30){
@@ -50,11 +55,13 @@ let drawMap = () => {
           return item['fips'] === id
       })
 
-      let percentage = county['bachelorsOrHigher']
+      let percentage = county['LS']
       return percentage
   })
   .on('mouseover',(countyDataItem)=>{
     console.log('mouse over')
+    let disasterid = select.options[select.selectedIndex].value;
+
     tooltip.transition()
                     .style('visibility', 'visible')
     let id = countyDataItem['properties']['ID_3']
@@ -62,10 +69,10 @@ let drawMap = () => {
           return item['fips'] === id
       })
       tooltip.text(county['fips'] + ' - ' + county['area_name'] + ', ' + 
-                    county['state'] + ' : ' + county['bachelorsOrHigher'] + '%')
-      tooltip.attr('data-education', county['bachelorsOrHigher'] )
-      console.log(county['fips'] + ' - ' + county['area_name'] + ', ' + 
-      county['state'] + ' : ' + county['bachelorsOrHigher'] + '%')
+                    county['state'] + ' : ' + county[disasterid] + '% for Disaster ID' + disasterid )
+      tooltip.attr('data-education', county[disasterid] )
+      //console.log(county['fips'] + ' - ' + county['area_name'] + ', ' + 
+      //county['state'] + ' : ' + county['LS'] + '%')
   })
 
   .on('mouseout', (countyDataItem) => {
@@ -84,7 +91,7 @@ d3.json(talukaData).then(
         countyData = data.features
         console.log(countyData)
 
-        d3.json(educationURL).then(
+        d3.json(disasterURL).then(
             (data,error)=>{
               if(error){
                 console.log(log)

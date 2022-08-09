@@ -13,7 +13,21 @@
     <div id='description'>
     total number of Flooding events.
     </div>
-<div id = 'tootip'>
+    <div id ='hazardtype'>
+        <select name="disaster" id="disaster" onchange="drawMap()">
+            <option value="LS">Landslide</option>
+            <option value="CYC">Cyclone</option>
+            <option value="EQ">earthquake</option>
+            <option value="FL">Flood</option>
+            <option value="UFL">urban flood</option>
+            <option value="HWN">Heatwave</option>
+            <option value="TSU">Tsunami</option>
+            <option value="CHE">Chemical hazard</option>
+            <option value="NUC">Nuclear Hazard</option>
+            <option value="BIO">Biological Hazard</option>
+          </select>
+    </div>
+<div id = 'tooltip'>
 
 </div>
 
