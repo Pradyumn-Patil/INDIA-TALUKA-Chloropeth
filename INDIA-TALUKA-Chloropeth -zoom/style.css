@@ -1,0 +1,32 @@
+html, body{
+    min-height: 100%
+}
+body {
+    background-color: #c1f1f1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+svg{
+    background-color: white;
+}
+#canvas{
+    min-height: 600px;
+    min-width: 950px;
+    
+}
+.county:hover{
+    fill: yellow 
+
+}
+#tooltip{
+    visibility: hidden;
+    height: auto;
+    width: auto;
+    margin-top: 2px;
+    color: red;
+    font-size: 24px;
+    margin-bottom: 5px;
+}

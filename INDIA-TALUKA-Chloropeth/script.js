@@ -3,9 +3,11 @@ let localcountyURL = 'http://localhost/sih/geo%20json/america-county-geojson.jso
 let talukaData = 'http://localhost/sih/geo%20json/india_taluk.geojson.json'
 let educationURL = 'http://localhost/sih/geo%20json/educationDataTaluka.json'
 let disasterURL = 'http://localhost/sih/geo%20json/disasters.json'
+let stateURL = 'http://localhost/sih/geo%20json/states-centers.json'
 
 let countyData
 let educationData
+let stateCenterData
 let canvas = d3.select('#canvas')
 let tooltip = d3.select('#tooltip')
 
@@ -14,22 +16,43 @@ let select = document.getElementById('disaster');
 let arrayOfID = [] 
 
 let drawMap = () => {
+
   var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 950 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
+    let state = document.getElementById("state") 
+    var stateName = state.options[state.selectedIndex].text; 
+    let stateData = countyData.filter(function (data) {
+      return data.properties.NAME_1 === stateName;
+  });
+  console.log("State Name: " + stateName )
+
+  selectedStateData = stateCenterData.filter(function (data) {
+    return data.NAME_1 === stateName;
+  });
+  console.log(selectedStateData)
+  var scale = selectedStateData[0].scale
+  var long = selectedStateData[0].long
+  var lat = selectedStateData[0].lat
+  
+  
+    console.log("State : " + stateName + ", scale " + scale + "long : " + long)
+
     var projection = d3.geoMercator()
-        .scale(1000)
-        .center([80,22])
+        .scale(scale)
+        .center([long,lat])
         .translate([width / 2 - margin.left, height / 2]);
+        d3.select("#canvas")
+        .selectAll("path")
+        .remove();
         canvas.selectAll('path')
-        .data(countyData)
+        .data(stateData)
         .enter()
         .append('path')
         .attr('d', d3.geoPath().projection(projection))
         .attr('class', 'county')
         .attr('fill', (countyDataItem) => {
-          
-          let id = countyDataItem['properties']['ID_3']
+         let id = countyDataItem['properties']['ID_3']
           let county = educationData.find((item) => {
               return item['fips'] === id
           })
@@ -54,8 +77,8 @@ let drawMap = () => {
       let county = educationData.find((item) => {
           return item['fips'] === id
       })
-
-      let percentage = county['LS']
+      let disasterid = select.options[select.selectedIndex].value;
+      let percentage = county[disasterid]
       return percentage
   })
   .on('mouseover',(countyDataItem)=>{
@@ -69,10 +92,8 @@ let drawMap = () => {
           return item['fips'] === id
       })
       tooltip.text(county['fips'] + ' - ' + county['area_name'] + ', ' + 
-                    county['state'] + ' : ' + county[disasterid] + '% for Disaster ID' + disasterid )
+                    county['state'] + ' : ' + county[disasterid] + '% for Disaster ID - ' + disasterid )
       tooltip.attr('data-education', county[disasterid] )
-      //console.log(county['fips'] + ' - ' + county['area_name'] + ', ' + 
-      //county['state'] + ' : ' + county['LS'] + '%')
   })
 
   .on('mouseout', (countyDataItem) => {
@@ -84,12 +105,26 @@ let drawMap = () => {
 d3.json(talukaData).then(
     (data,error)=>{
        if(error){
-        console.log(log)
+        
         
        } else{
 
-        countyData = data.features
+        countyData = data.features.filter(function (data) {
+          return data.properties.NAME_0 === 'India';
+      });
         console.log(countyData)
+        d3.json(stateURL).then(
+          (data,error)=>{
+            if(error){
+              console.log(log)
+            } else {
+              stateCenterData = data
+              console.log(stateCenterData)     
+            }
+          }
+  
+      )
+
 
         d3.json(disasterURL).then(
             (data,error)=>{
@@ -97,12 +132,13 @@ d3.json(talukaData).then(
                 console.log(log)
               } else {
                 educationData = data
-                console.log(educationData)
+                
                 drawMap()                
               }
             }
     
         )
+        
        }
     }
 )

@@ -15,9 +15,10 @@ svg{
 #canvas{
     min-height: 600px;
     min-width: 950px;
+    
 }
 .county:hover{
-    fill: red 
+    fill: yellow 
 
 }
 #tooltip{
