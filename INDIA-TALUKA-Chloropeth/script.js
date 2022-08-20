@@ -1,9 +1,12 @@
-let countyURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json'
-let localcountyURL = 'http://localhost/sih/geo%20json/america-county-geojson.json'
+
 let talukaData = 'http://localhost/sih/geo%20json/india_taluk.geojson.json'
-let educationURL = 'http://localhost/sih/geo%20json/educationDataTaluka.json'
-let disasterURL = 'http://localhost/sih/geo%20json/disasters.json'
+let disasterURL = 'http://localhost/sih/geo%20json/Disaster_state_district_taluka_yearwise.json'
 let stateURL = 'http://localhost/sih/geo%20json/states-centers.json'
+
+//let talukaData = 'http://192.168.0.113/sih/geo%20json/india_taluk.geojson.json'
+//let disasterURL = 'http://192.168.0.113/sih/geo%20json/Disaster_state_district_taluka_yearwise.json'
+//let stateURL = 'http://192.168.0.113/sih/geo%20json/states-centers.json'
+
 
 let countyData
 let educationData
@@ -24,13 +27,48 @@ let drawMap = () => {
     var stateName = state.options[state.selectedIndex].text; 
     let stateData = countyData.filter(function (data) {
       return data.properties.NAME_1 === stateName;
-  });
+    });
   console.log("State Name: " + stateName )
 
   selectedStateData = stateCenterData.filter(function (data) {
     return data.NAME_1 === stateName;
-  });
-  console.log(selectedStateData)
+  }); 
+   console.log(selectedStateData)
+
+
+let stateDisasterData = educationData.filter(function (data) {
+  return data.state === stateName;
+});
+
+let stateeducationData = educationData.filter(function (data) {
+  return data.state === stateName;
+});
+
+var  LS= 0,
+EQ= 0,
+CYC= 0,
+FL= 0,
+UFL= 0,
+HWV= 0,
+TSU= 0,
+CHEM= 0,
+NUC= 0,
+BIO= 0; 
+for (var i = 0; i < stateeducationData.length; i++){
+    EQ = EQ + stateeducationData[i].EQ
+    LS = LS + stateeducationData[i].LS
+    CYC = CYC + stateeducationData[i].CYC
+    FL = FL + stateeducationData[i].FL  
+    UFL = UFL + stateeducationData[i].UFL  
+    HWV = HWV + stateeducationData[i].HWV  
+    TSU = TSU + stateeducationData[i].TSU  
+    CHEM = CHEM + stateeducationData[i].CHEM  
+    NUC = NUC + stateeducationData[i].NUC  
+    BIO = BIO + stateeducationData[i].BIO  
+                              // caculate total event in a state in a state .
+  }
+  console.log("Total EQ : "+EQ)
+
   var scale = selectedStateData[0].scale
   var long = selectedStateData[0].long
   var lat = selectedStateData[0].lat
