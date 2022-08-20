@@ -20,11 +20,9 @@ let drawMap = () => {
     height = 600 - margin.top - margin.bottom,
     centered;
     
-    var svg = d3.select("body")
-            .append("svg")
+    var svg = d3.select("#canvas")
             .attr("width", width)
             .attr("height", height)
-            .append("g");
 
     var projection = d3.geoMercator()
         .scale(1000)
