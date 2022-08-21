@@ -83,7 +83,7 @@
         fill: steelblue;
     }
 
-    .stacked-chart .series-ls {
+    .stacked-chart .series-fl {
         fill: #CCC;
     }
 
@@ -117,7 +117,7 @@
         stroke: steelblue;
     }
 
-    .stacked-chart .series-ls .series-box {
+    .stacked-chart .series-fl .series-box {
         stroke: #CCC;
     }
 
@@ -161,9 +161,9 @@
     <% }); %>
 </table>
 </script>
-<script src="d3.v3.min.js" charset="utf-8">
-        integrity="sha384-N8EP0Yml0jN7e0DcXlZ6rt+iqKU9Ck6f1ZQ+j2puxatnBq4k9E8Q6vqBcY34LNbn"
-        crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js" charset="utf-8">
+        integrity = "sha384-N8EP0Yml0jN7e0DcXlZ6rt+iqKU9Ck6f1ZQ+j2puxatnBq4k9E8Q6vqBcY34LNbn"
+        crossorigin = "anonymous" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"
         integrity="sha384-FZY+KSLVXVyc1qAlqH9oCx1JEOlQh6iXfw3o2n3Iy32qGjXmUPWT9I0Z9e9wxYe3"
         crossorigin="anonymous"></script>
@@ -171,15 +171,15 @@
         integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq"
         crossorigin="anonymous"></script>
     <script type="text/javascript">
-        "use strict";
+            "use strict";
         let disasterURL = 'http://localhost/sih/geo%20json/Disaster_state_district_taluka_yearwise.json'
         let diasterYearData
 
         /*global $, d3v3, _ */
         function drawBarChart() {
-            var yzdata = GetYearwiseData(334)
-             console.log(yzdata)
-            var seriesNames = ["EQ", "LS", "CYC"],
+            var yzdata = GetYearwiseData(335)
+            console.log(yzdata)
+            var seriesNames = ["EQ", "FL", "CYC"],
                 numSamples = 3,
                 numSeries = seriesNames.length,
                 data = yzdata,
@@ -228,6 +228,7 @@
             var yScale = d3v3.scale.linear()
                 .domain([0, maxStackY])
                 .range([height, 0]);
+
 
             var heightScale = d3v3.scale.linear()
                 .domain([0, maxStackY])
@@ -656,17 +657,17 @@
         }
 
 
-        async function fetchData(url){
+        async function fetchData(url) {
             const response = await fetch(url);
-             diasterYearData = await response.json();  // Filter Data for a fips 
+            diasterYearData = await response.json();  // Filter Data for a fips 
 
-             drawBarChart()         //draw bar chart  
+            drawBarChart()         //draw bar chart  
         }
-                    
+
 
         fetchData(disasterURL)
-         console.log(diasterYearData)
-   
+        console.log(diasterYearData)
+
 
 
 
@@ -678,14 +679,14 @@
             });
             var YearWiseValues = []
             var values = []
-            var EQ = [], LS = [], CYC = [];
+            var EQ = [], FL = [], CYC = [];
             for (var i = 0; i < 3; i++) {
                 EQ.push({ "x": i, "y": localdata[i].EQ, "y0": 0 })
-                LS.push({ "x": i, "y": localdata[i].LS, "y0": 0 })
+                FL.push({ "x": i, "y": localdata[i].FL, "y0": 0 })
                 CYC.push({ "x": i, "y": localdata[i].CYC, "y0": 0 })
             }
 
-            return [{ "name": "EQ", "values": EQ }, { "name": "LS", "values": LS }, { "name": "CYC", "values": CYC }]
+            return [{ "name": "EQ", "values": EQ }, { "name": "FL", "values": FL }, { "name": "CYC", "values": CYC }]
         }        
     </script>
 </body>
